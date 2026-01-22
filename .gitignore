@@ -1,0 +1,117 @@
+﻿# .gitignore gerado para aplicações C# / .NET (inclui Visual Studio, Rider, VS Code, .NET 9)
+# Mantém arquivos de projeto importantes no controle de versão e ignora arquivos gerados, caches e segredos locais.
+
+# === Visual Studio ===
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# === Build outputs ===
+[Bb]in/
+[Oo]bj/
+**/bin/
+**/obj/
+publish/
+PublishProfiles/
+
+# === Resharper / Rider / JetBrains ===
+_ReSharper*/
+*._ReSharper.*
+*.DotSettings.user
+.idea/
+*.sln.iml
+*.iws
+.idea_modules/
+
+# === Visual Studio Code ===
+.vscode/
+.history/
+
+# === NuGet / paket / dotnet ===
+*.nupkg
+*.snupkg
+.nuget/packages/
+packages/
+project.lock.json
+project.assets.json
+artifacts/
+.nuget/*
+.dotnet/tools/
+
+# === Test results, coverage, profiling ===
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+coverage.*.xml
+*.prof
+
+# === Logs, temp, caches ===
+*.log
+*.vscache
+*.cache
+*.pid
+*.cachefile
+
+# === Database / LocalDB / SQL Server ===
+*.mdf
+*.ldf
+*.ndf
+
+# === Publish / deployment / installers ===
+*.Publish.xml
+*.publishsettings
+*.deployproj
+
+# === User secrets / local config ===
+secrets.json
+appsettings*.Local.json
+appsettings*.Secrets.json
+appsettings.Development.json
+
+# === Certificates / keys / secrets ===
+*.pfx
+*.key
+*.cer
+
+# === OS generated files ===
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# === Package managers / frontend (opcional, mas comum em projetos web) ===
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+package-lock.json
+
+# === Docker / containers ===
+docker-compose.override.yml
+docker-compose.*.yml
+**/.docker
+
+# === IDE / editor specifics ===
+*.sublime-workspace
+*.sublime-project
+*.vscode/*
+
+# === Miscellaneous ===
+*.exe
+*.dll
+*.obj
+*.ilk
+*.pdb
+*.ilk
+*.meta
+*.log
+*.vsix
+
+# Se quiser ignorar arquivos binários/artefatos de build produzidos por pipelines,
+# adicione a pasta usada por seu pipeline (ex: /artifacts/ ou /drop/) abaixo:
+# artifacts/
+/Movie.User.Service/Properties

@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="../Movie.Usar.Service.Domain/Movie.User.Service.Domain.csproj" Id="4cdd0c5f-b7cb-40d6-92bc-f29209dc0274" />
+  <Project Path="../Movie.User.Service.CrossCutting/Movie.User.Service.CrossCutting.csproj" Id="b7a503ed-c15a-4524-a1b6-7923f2440f9a" />
+  <Project Path="../Movie.User.Service.Infra/Movie.User.Service.Infra.csproj" Id="a22b30de-9836-4db4-b9b7-d1af054e64bd" />
+  <Project Path="../Movie.User.Service.Service/Movie.User.Service.Service.csproj" Id="226b3c6c-1ca1-4122-a7d4-9b75e91b030e" />
+  <Project Path="Movie.User.Service.Api.csproj" />
+</Solution>
