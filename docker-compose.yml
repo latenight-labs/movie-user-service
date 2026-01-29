@@ -1,0 +1,81 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: movie-user-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: movieuserservice
+      POSTGRES_USER: movieuser
+      POSTGRES_PASSWORD: moviepass123
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/Movie.User.Service.Infra/Scripts:/docker-entrypoint-initdb.d:ro
+    networks:
+      - movie-user-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U movieuser -d movieuserservice"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # pgAdmin for database management (optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: movie-user-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@movieuser.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - movie-user-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Movie User Service API
+  movie-user-api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: final
+    container_name: movie-user-api
+    restart: unless-stopped
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8000
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=movieuserservice;Username=movieuser;Password=moviepass123;Port=5432;Pooling=true;MinPoolSize=1;MaxPoolSize=20;CommandTimeout=30;
+      - DatabaseSettings__EnableSensitiveDataLogging=true
+      - DatabaseSettings__EnableDetailedErrors=true
+    ports:
+      - "8000:8000"
+    networks:
+      - movie-user-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  movie-user-network:
+    driver: bridge
