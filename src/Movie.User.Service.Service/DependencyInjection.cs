@@ -30,6 +30,7 @@ public static class DependencyInjection
         services.AddScoped<IUserSearchStrategy, AddressSearchStrategy>();
         services.AddScoped<IUserSearchStrategy, PhoneSearchStrategy>();
         services.AddScoped<IUserSearchStrategy, ZipCodeSearchStrategy>();
+        services.AddScoped<IUserSearchStrategy, AllCreatedAfterDateTimeStrategy>(); //Arthur
 
         return services;
     }

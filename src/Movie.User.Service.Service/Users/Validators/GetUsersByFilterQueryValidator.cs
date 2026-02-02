@@ -62,6 +62,13 @@ public class GetUsersByFilterQueryValidator : AbstractValidator<GetUsersByFilter
                 .MinimumLength(5).WithMessage("Endereço deve ter no mínimo 5 caracteres.")
                 .MaximumLength(200).WithMessage("Endereço deve ter no máximo 200 caracteres.");
         });
+        When(x => x.StartDate.HasValue, () => // Arthur
+        {
+            RuleFor(x => x.StartDate)
+                .InclusiveBetween(new DateTime(1990, 1, 1),
+                                    DateTime.Today)
+                .WithMessage("Data deve estar entre 01/01/1990 e hoje.");
+        });
     }
 
     private bool HaveAtLeastOneFilter(GetUsersByFilterQuery query)
@@ -72,6 +79,7 @@ public class GetUsersByFilterQueryValidator : AbstractValidator<GetUsersByFilter
                !string.IsNullOrWhiteSpace(query.City) ||
                !string.IsNullOrWhiteSpace(query.State) ||
                !string.IsNullOrWhiteSpace(query.ZipCode) ||
-               !string.IsNullOrWhiteSpace(query.Country);
+               !string.IsNullOrWhiteSpace(query.Country) ||
+               !query.StartDate.HasValue;// Arthur
     }
 }

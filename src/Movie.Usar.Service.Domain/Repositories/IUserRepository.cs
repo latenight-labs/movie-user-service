@@ -17,4 +17,8 @@ public interface IUserRepository
     Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default);
     Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default);
     Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken = default);
+    
+    /// Ideia Arthur
+    Task<IEnumerable<Entities.User>> GetAllCreatedAfterDateTime(DateTime? date,
+        CancellationToken cancellationToken = default);
 }

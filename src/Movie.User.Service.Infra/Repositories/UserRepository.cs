@@ -105,4 +105,16 @@ public class UserRepository : IUserRepository
         return await _context.Users
             .AnyAsync(u => u.Username == username && u.IsActive, cancellationToken);
     }
+
+
+    /// Ideia Arthur
+    public async Task<IEnumerable<Domain.Entities.User>> GetAllCreatedAfterDateTime(DateTime? date,
+        CancellationToken cancellationToken = default)
+    {
+        return await _context.Users
+            .Where(u => u.CreatedAt >= date && u.IsActive)
+            .OrderBy(u => u.Username)
+            .ToListAsync(cancellationToken);
+    }
+    
 }
