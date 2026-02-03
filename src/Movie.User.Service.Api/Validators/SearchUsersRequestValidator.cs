@@ -51,6 +51,13 @@ public class SearchUsersRequestValidator : AbstractValidator<SearchUsersRequest>
                 .MinimumLength(2).WithMessage("Nome deve ter no mínimo 2 caracteres.")
                 .MaximumLength(200).WithMessage("Nome deve ter no máximo 200 caracteres.");
         });
+        When(x => x.StartDate.HasValue, () => 
+        {
+            RuleFor(x => x.StartDate)
+                .InclusiveBetween(new DateTime(1990, 1, 1),
+                    DateTime.Today)
+                .WithMessage("Data deve estar entre 01/01/1990 e hoje.");
+        });
     }
 
     private bool HaveAtLeastOneFilter(SearchUsersRequest request)
@@ -59,6 +66,7 @@ public class SearchUsersRequestValidator : AbstractValidator<SearchUsersRequest>
                !string.IsNullOrWhiteSpace(request.Username) ||
                !string.IsNullOrWhiteSpace(request.City) ||
                !string.IsNullOrWhiteSpace(request.State) ||
-               !string.IsNullOrWhiteSpace(request.Country);
+               !string.IsNullOrWhiteSpace(request.Country) ||
+               !request.StartDate.HasValue;
     }
 }
