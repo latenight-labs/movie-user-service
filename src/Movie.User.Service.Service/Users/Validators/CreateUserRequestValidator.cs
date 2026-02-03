@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.Extensions.Options;
 using Movie.User.Service.Domain.Configuration;
 using Movie.User.Service.Service.Users.DTOs;
+using Movie.User.Service.Service.Users.Validators.Extensions;
 
 namespace Movie.User.Service.Service.Users.Validators;
 
@@ -10,17 +11,13 @@ public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
     public CreateUserRequestValidator(IOptions<UserDomainOptions> options)
     {
         var rules = options.Value;
-        
+
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Nome é obrigatório.")
-            .MinimumLength(rules.Name.Min).WithMessage($"Nome deve ter no mínimo {rules.Name.Min} caracteres.")
-            .MaximumLength(rules.Name.Max).WithMessage($"Nome deve ter no máximo {rules.Name.Max} caracteres.");
+            .RequiredWithLength(rules.Name.Min, rules.Name.Max, "Nome");
 
         RuleFor(x => x.Username)
-            .NotEmpty().WithMessage("Nome de usuário é obrigatório.")
-            .MinimumLength(rules.Username.Min).WithMessage($"Nome de usuário deve ter no mínimo {rules.Username.Min} caracteres.")
-            .MaximumLength(rules.Username.Max).WithMessage($"Nome de usuário deve ter no máximo {rules.Username.Max} caracteres.");
-
+            .RequiredWithLength(rules.Username.Min, rules.Username.Max, "Nome de Usuário");
+           
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email é obrigatório.")
             .EmailAddress().WithMessage("Email inválido.");
@@ -33,27 +30,19 @@ public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
             .NotNull().WithMessage("Endereço é obrigatório.");
 
         RuleFor(x => x.Address.Street)
-            .MinimumLength(rules.Street.Min).WithMessage($"Rua deve ter no mínimo {rules.Street.Min} caracteres.")
-            .MaximumLength(rules.Street.Max).WithMessage($"Rua deve ter no máximo {rules.Street.Max} caracteres.")
-            .NotEmpty().WithMessage("Rua é obrigatória.");
+            .RequiredWithLength(rules.Street.Min, rules.Street.Max, "Rua");
 
         RuleFor(x => x.Address.City)
-            .MinimumLength(rules.City.Min).WithMessage($"Cidade deve ter no mínimo {rules.City.Min} caracteres.")
-            .MaximumLength(rules.City.Max).WithMessage($"Cidade deve ter no máximo {rules.City.Max} caracteres.")
-            .NotEmpty().WithMessage("Cidade é obrigatória.");
+            .RequiredWithLength(rules.City.Min, rules.City.Max, "Cidade");
 
         RuleFor(x => x.Address.State)
-            .MinimumLength(rules.State.Min).WithMessage($"Estado deve ter no mínimo {rules.State.Min} caracteres.")
-            .MaximumLength(rules.State.Max).WithMessage($"Estado deve ter no máximo {rules.State.Max} caracteres.")
-            .NotEmpty().WithMessage("Estado é obrigatório.");
+            .RequiredWithLength(rules.State.Min, rules.State.Max, "Estado");
 
         RuleFor(x => x.Address.ZipCode)
             .NotEmpty().WithMessage("CEP é obrigatório.")
             .Matches(@"^\d{5}-?\d{3}$").WithMessage("CEP inválido.");
 
         RuleFor(x => x.Address.Country)
-            .MinimumLength(rules.Country.Min).WithMessage($"País deve ter no mínimo {rules.Country.Min} caracteres.")
-            .MaximumLength(rules.Country.Max).WithMessage($"Pais deve ter no máximo {rules.Country.Max} caracteres.")
-            .NotEmpty().WithMessage("País é obrigatório.");
+            .RequiredWithLength(rules.Country.Min, rules.Country.Max, "País");
     }
 }

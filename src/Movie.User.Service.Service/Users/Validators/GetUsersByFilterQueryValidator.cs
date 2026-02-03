@@ -2,12 +2,11 @@ using FluentValidation;
 using Microsoft.Extensions.Options;
 using Movie.User.Service.Domain.Configuration;
 using Movie.User.Service.Service.Users.Queries;
+using Movie.User.Service.Service.Users.Validators.Extensions;
 
 namespace Movie.User.Service.Service.Users.Validators;
 
-/// <summary>
-/// Validador para GetUsersByFilterQuery - será executado automaticamente pelo ValidationBehavior
-/// </summary>
+
 public class GetUsersByFilterQueryValidator : AbstractValidator<GetUsersByFilterQuery>
 {
     public GetUsersByFilterQueryValidator( IOptions<UserDomainOptions> options)
