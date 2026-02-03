@@ -6,13 +6,7 @@ public class AllCreatedAfterDateTimeStrategy : IUserSearchStrategy //Arthur
 {
     public bool CanApply(GetUsersByFilterQuery query)
     {
-        return string.IsNullOrWhiteSpace(query.Username) &&
-               string.IsNullOrWhiteSpace(query.City) &&
-               string.IsNullOrWhiteSpace(query.State) &&
-               string.IsNullOrWhiteSpace(query.Country) &&
-               string.IsNullOrWhiteSpace(query.Phone) &&
-               string.IsNullOrWhiteSpace(query.Address) &&
-               string.IsNullOrWhiteSpace(query.ZipCode);
+        return query.StartDate.HasValue;
     }
 
     public async Task<IEnumerable<Movie.User.Service.Domain.Entities.User>> SearchAsync(

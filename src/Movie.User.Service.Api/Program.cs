@@ -1,12 +1,17 @@
 using Movie.User.Service.Api;
 using Movie.User.Service.Infra;
 using Movie.User.Service.Service;
+using Movie.User.Service.Domain.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ===================================================================
 // DEPENDENCY INJECTION - Organized by Layer
 // ===================================================================
+
+// 🧠 Domain Configuration - Business rules and invariants
+builder.Services.Configure<UserDomainOptions>(
+    builder.Configuration.GetSection("UserDomain"));
 
 // 🌐 API Layer - Controllers, Swagger, Validation, CORS
 builder.Services.AddApiServices();

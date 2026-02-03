@@ -13,7 +13,7 @@ public class AllUsersSearchStrategy : IUserSearchStrategy
                string.IsNullOrWhiteSpace(query.State) &&
                string.IsNullOrWhiteSpace(query.Country) &&
                string.IsNullOrWhiteSpace(query.Phone) &&
-               string.IsNullOrWhiteSpace(query.Address) &&
+               string.IsNullOrWhiteSpace(query.Street) &&
                string.IsNullOrWhiteSpace(query.ZipCode);
     }
 

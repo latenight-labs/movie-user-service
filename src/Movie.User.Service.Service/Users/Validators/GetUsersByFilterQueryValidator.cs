@@ -1,4 +1,6 @@
 using FluentValidation;
+using Microsoft.Extensions.Options;
+using Movie.User.Service.Domain.Configuration;
 using Movie.User.Service.Service.Users.Queries;
 
 namespace Movie.User.Service.Service.Users.Validators;
@@ -8,8 +10,10 @@ namespace Movie.User.Service.Service.Users.Validators;
 /// </summary>
 public class GetUsersByFilterQueryValidator : AbstractValidator<GetUsersByFilterQuery>
 {
-    public GetUsersByFilterQueryValidator()
+    public GetUsersByFilterQueryValidator( IOptions<UserDomainOptions> options)
     {
+        var rules = options.Value;
+        
         // Valida que pelo menos um filtro seja fornecido
         RuleFor(x => x)
             .Must(HaveAtLeastOneFilter)
@@ -19,8 +23,8 @@ public class GetUsersByFilterQueryValidator : AbstractValidator<GetUsersByFilter
         When(x => !string.IsNullOrWhiteSpace(x.Username), () =>
         {
             RuleFor(x => x.Username)
-                .MinimumLength(3).WithMessage("Nome de usuário deve ter no mínimo 3 caracteres.")
-                .MaximumLength(50).WithMessage("Nome de usuário deve ter no máximo 50 caracteres.");
+                .MinimumLength(rules.Username.Min).WithMessage($"Nome de usuário deve ter no mínimo {rules.Name.Min} caracteres.")
+                .MaximumLength(rules.Username.Max).WithMessage($"Nome de usuário deve ter no máximo {rules.Name.Max} caracteres.");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.Phone), () =>
@@ -38,36 +42,35 @@ public class GetUsersByFilterQueryValidator : AbstractValidator<GetUsersByFilter
         When(x => !string.IsNullOrWhiteSpace(x.City), () =>
         {
             RuleFor(x => x.City)
-                .MinimumLength(2).WithMessage("Cidade deve ter no mínimo 2 caracteres.")
-                .MaximumLength(100).WithMessage("Cidade deve ter no máximo 100 caracteres.");
+                .MinimumLength(rules.City.Min).WithMessage($"Cidade deve ter no mínimo {rules.City.Min} caracteres.")
+                .MaximumLength(rules.City.Max).WithMessage($"Cidade deve ter no máximo {rules.City.Max} caracteres.");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.State), () =>
         {
             RuleFor(x => x.State)
-                .MinimumLength(2).WithMessage("Estado deve ter no mínimo 2 caracteres.")
-                .MaximumLength(100).WithMessage("Estado deve ter no máximo 100 caracteres.");
+                .MinimumLength(rules.State.Min).WithMessage($"Estado deve ter no mínimo {rules.State.Min} caracteres.")
+                .MaximumLength(rules.State.Max).WithMessage($"Estado deve ter no máximo {rules.State.Max} caracteres.");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.Country), () =>
         {
             RuleFor(x => x.Country)
-                .MinimumLength(2).WithMessage("País deve ter no mínimo 2 caracteres.")
-                .MaximumLength(100).WithMessage("País deve ter no máximo 100 caracteres.");
+                .MinimumLength(rules.Country.Min).WithMessage($"País deve ter no mínimo {rules.Country.Min} caracteres.")
+                .MaximumLength(rules.Country.Max).WithMessage($"País deve ter no máximo {rules.Country.Max} caracteres.");
         });
 
-        When(x => !string.IsNullOrWhiteSpace(x.Address), () =>
+        When(x => !string.IsNullOrWhiteSpace(x.Street), () =>
         {
-            RuleFor(x => x.Address)
-                .MinimumLength(5).WithMessage("Endereço deve ter no mínimo 5 caracteres.")
-                .MaximumLength(200).WithMessage("Endereço deve ter no máximo 200 caracteres.");
+            RuleFor(x => x.Street)
+                .MinimumLength(rules.Street.Min).WithMessage($"Endereço deve ter no mínimo {rules.Street.Min} caracteres.")
+                .MaximumLength(rules.Street.Max).WithMessage($"Endereço deve ter no máximo {rules.Street.Max} caracteres.");
         });
         When(x => x.StartDate.HasValue, () => // Arthur
         {
             RuleFor(x => x.StartDate)
-                .InclusiveBetween(new DateTime(1990, 1, 1),
-                                    DateTime.Today)
-                .WithMessage("Data deve estar entre 01/01/1990 e hoje.");
+                .InclusiveBetween(rules.LaunchDate, DateTime.Today)
+                .WithMessage($"Data deve estar entre {rules.LaunchDate} e hoje.");
         });
     }
 
@@ -75,7 +78,7 @@ public class GetUsersByFilterQueryValidator : AbstractValidator<GetUsersByFilter
     {
         return !string.IsNullOrWhiteSpace(query.Username) ||
                !string.IsNullOrWhiteSpace(query.Phone) ||
-               !string.IsNullOrWhiteSpace(query.Address) ||
+               !string.IsNullOrWhiteSpace(query.Street) ||
                !string.IsNullOrWhiteSpace(query.City) ||
                !string.IsNullOrWhiteSpace(query.State) ||
                !string.IsNullOrWhiteSpace(query.ZipCode) ||

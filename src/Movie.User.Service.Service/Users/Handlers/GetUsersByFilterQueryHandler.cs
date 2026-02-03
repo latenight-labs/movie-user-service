@@ -1,6 +1,7 @@
 using MediatR;
 using Movie.User.Service.Service.Common;
 using Movie.User.Service.Domain.Repositories;
+using Movie.User.Service.Domain.ValueObjects;
 using Movie.User.Service.Service.Users.DTOs;
 using Movie.User.Service.Service.Users.Mappings;
 using Movie.User.Service.Service.Users.Queries;

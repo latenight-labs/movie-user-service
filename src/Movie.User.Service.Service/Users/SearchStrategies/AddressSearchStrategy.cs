@@ -8,7 +8,7 @@ public class AddressSearchStrategy : IUserSearchStrategy
 {
     public bool CanApply(GetUsersByFilterQuery query)
     {
-        return !string.IsNullOrWhiteSpace(query.Address);
+        return !string.IsNullOrWhiteSpace(query.Street);
     }
 
     public async Task<IEnumerable<Movie.User.Service.Domain.Entities.User>> SearchAsync(
@@ -18,6 +18,6 @@ public class AddressSearchStrategy : IUserSearchStrategy
     {
         // Como não temos método específico para buscar por endereço, retornamos todos e filtramos
         var allUsers = await repository.GetAllAsync(cancellationToken);
-        return allUsers.Where(u => u.Address.Street.Contains(query.Address!, StringComparison.OrdinalIgnoreCase));
+        return allUsers.Where(u => u.Address.Street.Contains(query.Street!, StringComparison.OrdinalIgnoreCase));
     }
 }
