@@ -12,5 +12,5 @@ public record GetUsersByFilterQuery(
     string? State = null,
     string? ZipCode = null,
     string? Country = null,
-    DateTime? StartDate = null //Arthur
+    DateTimeOffset? StartDate = null //Arthur
 ) : IRequest<Result<IEnumerable<UserDto>>>;

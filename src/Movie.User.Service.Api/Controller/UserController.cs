@@ -71,6 +71,51 @@ public class UserController : ControllerBase
         return Ok(response);
     }
 
+
+    /// <summary>
+    /// Obtém todos os usuários cadastrados no sistema que foram criados a partir de uma data específica
+    /// </summary>
+    /// <returns>Lista de todos os usuários criados a partir de uma data específica</returns>
+    /// <response code="200">Lista de usuários retornada com sucesso</response>
+    /// <response code="400">Erro na requisição</response>
+    /// <response code="500">Erro interno do servidor</response>
+    [HttpGet("created-after-date")]
+    [SwaggerOperation(
+        Summary = "Buscar usuários criados a partir de uma data",
+        Description = "Retorna uma lista com todos os usuários criados a partir de uma data específica",
+        OperationId = "GetAllUsersCreatedAfterDate",
+        Tags = new[] { "Users", "CreatedAfterDate" }
+    )]
+    [SwaggerResponse(200, "Lista de usuários retornada com sucesso", typeof(IEnumerable<UserResponse>))]
+    [SwaggerResponse(400, "Erro na requisição")]
+    [SwaggerResponse(500, "Erro interno do servidor")]
+    public async Task<ActionResult<IEnumerable<UserResponse>>> GetAllUsersCreatedAfterDate(
+                                         [SwaggerParameter("Data ponto de referência para a pesquisa", Required = true)] DateTime date,
+                                         CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Buscando todos os usuários criados a partir da data: {Date}", date);
+
+        var query = new GetAllCreatedAfterDateTimeQuery(date);
+        var result = await _mediator.Send(query, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            _logger.LogWarning("Falha ao buscar usuários criados a partir da data: {Date}: {Error}", date, result.Error);
+            return BadRequest(new { errors = result.Errors, error = result.Error });
+        }
+
+        var response = result.Value!.ToResponse();
+        return Ok(response);
+        
+    }
+
+
+
+
+
+
+
+
     /// <summary>
     /// Obtém um usuário específico pelo seu ID
     /// </summary>
@@ -186,7 +231,8 @@ public class UserController : ControllerBase
             request.City,
             request.State,
             request.ZipCode,
-            request.Country
+            request.Country,
+            request.StartDate
         );
         
         var result = await _mediator.Send(query, cancellationToken);
