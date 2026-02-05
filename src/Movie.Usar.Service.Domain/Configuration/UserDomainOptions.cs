@@ -3,18 +3,18 @@
 public class UserDomainOptions
 {
     
-    public LengthRule Name { get; init; } = default!;
-    public LengthRule Username { get; init; } = default!;
-    public LengthRule Email { get; init; } = default!;
+    public LengthRule Name { get; init; } = new();
+    public LengthRule Username { get; init; } = new();
+    public LengthRule Email { get; init; } = new();
     
-    public string PhoneRegex { get; init; } = default!;
+    public string PhoneRegex { get; init; } = string.Empty;
     
     //ADRESS
-    public string ZipCodeRegex { get; init; } = default!;
-    public LengthRule Street { get; init; } = default!;
-    public LengthRule City { get; init; } = default!;
-    public LengthRule State { get; init; } = default!;
-    public LengthRule Country { get; init; } = default!;
+    public string ZipCodeRegex { get; init; } = string.Empty;
+    public LengthRule Street { get; init; } = new();
+    public LengthRule City { get; init; } = new();
+    public LengthRule State { get; init; } = new();
+    public LengthRule Country { get; init; } = new();
     
     
     public DateTime LaunchDate { get; init; }

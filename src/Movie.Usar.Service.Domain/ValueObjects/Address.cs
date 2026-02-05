@@ -46,4 +46,18 @@ public class Address
     {
         return HashCode.Combine(Street, City, State, ZipCode, Country);
     }
+
+    public static bool operator ==(Address? left, Address? right)
+    {
+        if (ReferenceEquals(left, right))
+            return true;
+        if (left is null || right is null)
+            return false;
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Address? left, Address? right)
+    {
+        return !(left == right);
+    }
 }
