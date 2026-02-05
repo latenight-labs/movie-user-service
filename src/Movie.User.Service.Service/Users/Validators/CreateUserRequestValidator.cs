@@ -17,14 +17,13 @@ public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
 
         RuleFor(x => x.Username)
             .RequiredWithLength(rules.Username.Min, rules.Username.Max, "Nome de Usuário");
-           
+
         RuleFor(x => x.Email)
-            .NotEmpty().WithMessage("Email é obrigatório.")
+            .Required("Email")
             .EmailAddress().WithMessage("Email inválido.");
 
         RuleFor(x => x.Phone)
-            .NotEmpty().WithMessage("Telefone é obrigatório.")
-            .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage("Telefone inválido.");
+            .MatchesPhoneRegex(rules.PhoneRegex, "Telefone");
 
         RuleFor(x => x.Address)
             .NotNull().WithMessage("Endereço é obrigatório.");
@@ -39,8 +38,7 @@ public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
             .RequiredWithLength(rules.State.Min, rules.State.Max, "Estado");
 
         RuleFor(x => x.Address.ZipCode)
-            .NotEmpty().WithMessage("CEP é obrigatório.")
-            .Matches(@"^\d{5}-?\d{3}$").WithMessage("CEP inválido.");
+            .MatchesZipCodeRegex(rules.ZipCodeRegex, "CEP");
 
         RuleFor(x => x.Address.Country)
             .RequiredWithLength(rules.Country.Min, rules.Country.Max, "País");

@@ -1,5 +1,8 @@
 using FluentValidation;
+using Microsoft.Extensions.Options;
 using Movie.User.Service.Api.Requests;
+using Movie.User.Service.Domain.Configuration;
+using Movie.User.Service.Service.Users.Validators.Extensions;
 
 namespace Movie.User.Service.Api.Validators;
 
@@ -8,8 +11,14 @@ namespace Movie.User.Service.Api.Validators;
 /// </summary>
 public class SearchUsersRequestValidator : AbstractValidator<SearchUsersRequest>
 {
-    public SearchUsersRequestValidator()
+    /// <summary>
+    /// Initializes a new instance of the SearchUsersRequestValidator with user domain options.
+    /// </summary>
+    /// <param name="options">The user domain options containing validation rules.</param>
+    public SearchUsersRequestValidator(IOptions<UserDomainOptions> options)
     {
+        var rules = options.Value;
+
         // Valida que pelo menos um filtro seja fornecido
         RuleFor(x => x)
             .Must(HaveAtLeastOneFilter)
@@ -19,44 +28,38 @@ public class SearchUsersRequestValidator : AbstractValidator<SearchUsersRequest>
         When(x => !string.IsNullOrWhiteSpace(x.Username), () =>
         {
             RuleFor(x => x.Username)
-                .MinimumLength(3).WithMessage("Nome de usuário deve ter no mínimo 3 caracteres.")
-                .MaximumLength(50).WithMessage("Nome de usuário deve ter no máximo 50 caracteres.");
+                .WithMinAndMaxLength(rules.Username.Min, rules.Username.Max, "Nome de usuário");
         });
 
 
         When(x => !string.IsNullOrWhiteSpace(x.City), () =>
         {
             RuleFor(x => x.City)
-                .MinimumLength(2).WithMessage("Cidade deve ter no mínimo 2 caracteres.")
-                .MaximumLength(100).WithMessage("Cidade deve ter no máximo 100 caracteres.");
+                .WithMinAndMaxLength(rules.City.Min, rules.City.Max, "Cidade");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.State), () =>
         {
             RuleFor(x => x.State)
-                .MinimumLength(2).WithMessage("Estado deve ter no mínimo 2 caracteres.")
-                .MaximumLength(100).WithMessage("Estado deve ter no máximo 100 caracteres.");
+                .WithMinAndMaxLength(rules.State.Min, rules.State.Max, "Estado");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.Country), () =>
         {
             RuleFor(x => x.Country)
-                .MinimumLength(2).WithMessage("País deve ter no mínimo 2 caracteres.")
-                .MaximumLength(100).WithMessage("País deve ter no máximo 100 caracteres.");
+                .WithMinAndMaxLength(rules.Country.Min, rules.Country.Max, "País");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.Name), () =>
         {
             RuleFor(x => x.Name)
-                .MinimumLength(2).WithMessage("Nome deve ter no mínimo 2 caracteres.")
-                .MaximumLength(200).WithMessage("Nome deve ter no máximo 200 caracteres.");
+                .WithMinAndMaxLength(rules.Name.Min, rules.Name.Max, "Nome");
         });
-        When(x => x.StartDate.HasValue, () => 
+        When(x => x.StartDate.HasValue, () =>
         {
             RuleFor(x => x.StartDate)
-                .InclusiveBetween(new DateTime(1990, 1, 1),
-                    DateTime.Today)
-                .WithMessage("Data deve estar entre 01/01/1990 e hoje.");
+                .InclusiveBetween(rules.LaunchDate, DateTime.Today)
+                .WithMessage($"Data deve estar entre {rules.LaunchDate:dd/MM/yyyy} e hoje.");
         });
     }
 

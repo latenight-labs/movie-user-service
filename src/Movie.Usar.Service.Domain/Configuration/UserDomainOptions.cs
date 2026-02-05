@@ -7,7 +7,10 @@ public class UserDomainOptions
     public LengthRule Username { get; init; } = default!;
     public LengthRule Email { get; init; } = default!;
     
+    public string PhoneRegex { get; init; } = default!;
+    
     //ADRESS
+    public string ZipCodeRegex { get; init; } = default!;
     public LengthRule Street { get; init; } = default!;
     public LengthRule City { get; init; } = default!;
     public LengthRule State { get; init; } = default!;

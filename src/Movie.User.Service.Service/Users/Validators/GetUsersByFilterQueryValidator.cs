@@ -6,10 +6,16 @@ using Movie.User.Service.Service.Users.Validators.Extensions;
 
 namespace Movie.User.Service.Service.Users.Validators;
 
-
+/// <summary>
+/// Validator for GetUsersByFilterQuery using FluentValidation
+/// </summary>
 public class GetUsersByFilterQueryValidator : AbstractValidator<GetUsersByFilterQuery>
 {
-    public GetUsersByFilterQueryValidator( IOptions<UserDomainOptions> options)
+    /// <summary>
+    /// Initializes a new instance of the GetUsersByFilterQueryValidator with user domain options.
+    /// </summary>
+    /// <param name="options">The user domain options containing validation rules.</param>
+    public GetUsersByFilterQueryValidator(IOptions<UserDomainOptions> options)
     {
         var rules = options.Value;
         
@@ -22,48 +28,43 @@ public class GetUsersByFilterQueryValidator : AbstractValidator<GetUsersByFilter
         When(x => !string.IsNullOrWhiteSpace(x.Username), () =>
         {
             RuleFor(x => x.Username)
-                .MinimumLength(rules.Username.Min).WithMessage($"Nome de usuário deve ter no mínimo {rules.Name.Min} caracteres.")
-                .MaximumLength(rules.Username.Max).WithMessage($"Nome de usuário deve ter no máximo {rules.Name.Max} caracteres.");
+                .WithMinAndMaxLength(rules.Username.Min, rules.Username.Max, "Nome de usuário");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.Phone), () =>
         {
             RuleFor(x => x.Phone)
-                .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage("Telefone inválido. Use o formato internacional.");
+                .Matches(rules.PhoneRegex).WithMessage("Telefone inválido. Use o formato internacional.");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.ZipCode), () =>
         {
             RuleFor(x => x.ZipCode)
-                .Matches(@"^\d{5}-?\d{3}$").WithMessage("CEP inválido. Use o formato 00000-000 ou 00000000.");
+                .Matches(rules.ZipCodeRegex).WithMessage("CEP inválido. Use o formato 00000-000 ou 00000000.");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.City), () =>
         {
             RuleFor(x => x.City)
-                .MinimumLength(rules.City.Min).WithMessage($"Cidade deve ter no mínimo {rules.City.Min} caracteres.")
-                .MaximumLength(rules.City.Max).WithMessage($"Cidade deve ter no máximo {rules.City.Max} caracteres.");
+                .WithMinAndMaxLength(rules.City.Min, rules.City.Max, "Cidade");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.State), () =>
         {
             RuleFor(x => x.State)
-                .MinimumLength(rules.State.Min).WithMessage($"Estado deve ter no mínimo {rules.State.Min} caracteres.")
-                .MaximumLength(rules.State.Max).WithMessage($"Estado deve ter no máximo {rules.State.Max} caracteres.");
+                .WithMinAndMaxLength(rules.State.Min, rules.State.Max, "Estado");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.Country), () =>
         {
             RuleFor(x => x.Country)
-                .MinimumLength(rules.Country.Min).WithMessage($"País deve ter no mínimo {rules.Country.Min} caracteres.")
-                .MaximumLength(rules.Country.Max).WithMessage($"País deve ter no máximo {rules.Country.Max} caracteres.");
+                .WithMinAndMaxLength(rules.Country.Min, rules.Country.Max, "País");
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.Street), () =>
         {
             RuleFor(x => x.Street)
-                .MinimumLength(rules.Street.Min).WithMessage($"Endereço deve ter no mínimo {rules.Street.Min} caracteres.")
-                .MaximumLength(rules.Street.Max).WithMessage($"Endereço deve ter no máximo {rules.Street.Max} caracteres.");
+                .WithMinAndMaxLength(rules.Street.Min, rules.Street.Max, "Endereço");
         });
         When(x => x.StartDate.HasValue, () => // Arthur
         {
