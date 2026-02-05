@@ -30,7 +30,7 @@ public class Result<T> : Result
     }
 
     public static Result<T> Success(T value) => new(value, true);
-    public static Result<T> Failure(string error) => new(default, false, error);
-    public static Result<T> Failure(List<string> errors) => new(default, false, null, errors);
+    public new static Result<T> Failure(string error) => new(default, false, error);
+    public new static Result<T> Failure(List<string> errors) => new(default, false, null, errors);
     public static Result<T> NotFound(string entityName) => new(default, false, $"{entityName} não encontrado(a).");
 }

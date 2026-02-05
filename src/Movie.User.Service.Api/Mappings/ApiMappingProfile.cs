@@ -8,6 +8,11 @@ namespace Movie.User.Service.Api.Mappings;
 /// </summary>
 public static class ApiMappingProfile
 {
+    /// <summary>
+    /// Converte UserDto para UserResponse
+    /// </summary>
+    /// <param name="dto">DTO do usuário</param>
+    /// <returns>Response do usuário</returns>
     public static UserResponse ToResponse(this UserDto dto)
     {
         return new UserResponse
@@ -25,6 +30,11 @@ public static class ApiMappingProfile
         };
     }
 
+    /// <summary>
+    /// Converte AddressDto para AddressResponse
+    /// </summary>
+    /// <param name="dto">DTO do endereço</param>
+    /// <returns>Response do endereço</returns>
     public static AddressResponse ToResponse(this AddressDto dto)
     {
         return new AddressResponse
@@ -37,6 +47,11 @@ public static class ApiMappingProfile
         };
     }
 
+    /// <summary>
+    /// Converte coleção de UserDto para coleção de UserResponse
+    /// </summary>
+    /// <param name="dtos">Coleção de DTOs de usuários</param>
+    /// <returns>Coleção de responses de usuários</returns>
     public static IEnumerable<UserResponse> ToResponse(this IEnumerable<UserDto> dtos)
     {
         return dtos.Select(dto => dto.ToResponse());

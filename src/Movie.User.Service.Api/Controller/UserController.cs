@@ -27,6 +27,12 @@ public class UserController : ControllerBase
     private readonly ILogger<UserController> _logger;
     private readonly IValidator<SearchUsersRequest> _searchUsersValidator;
 
+    /// <summary>
+    /// Construtor do UserController
+    /// </summary>
+    /// <param name="mediator">Mediator para envio de comandos e queries</param>
+    /// <param name="logger">Logger para registro de eventos</param>
+    /// <param name="searchUsersValidator">Validador para requisições de busca de usuários</param>
     public UserController(
         IMediator mediator, 
         ILogger<UserController> logger,

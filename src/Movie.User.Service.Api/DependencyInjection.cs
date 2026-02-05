@@ -7,8 +7,16 @@ using System.Reflection;
 
 namespace Movie.User.Service.Api;
 
+/// <summary>
+/// Classe de extensão para configuração de serviços da API
+/// </summary>
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Adiciona os serviços da camada de API ao container de injeção de dependência
+    /// </summary>
+    /// <param name="services">Coleção de serviços</param>
+    /// <returns>Coleção de serviços configurada</returns>
     public static IServiceCollection AddApiServices(this IServiceCollection services)
     {
         // Controllers
@@ -156,6 +164,11 @@ public static class DependencyInjection
         });
     }
 
+    /// <summary>
+    /// Configura o pipeline de requisições HTTP da aplicação
+    /// </summary>
+    /// <param name="app">Aplicação web</param>
+    /// <returns>Aplicação web configurada</returns>
     public static WebApplication ConfigureApiPipeline(this WebApplication app)
     {
         // Configure the HTTP request pipeline
@@ -203,9 +216,15 @@ public static class DependencyInjection
     }
 }
 
-// Validation Filter
+/// <summary>
+/// Filtro de validação para requisições da API
+/// </summary>
 public class ValidationFilter : ActionFilterAttribute
 {
+    /// <summary>
+    /// Executa validação antes da ação do controller
+    /// </summary>
+    /// <param name="context">Contexto de execução da ação</param>
     public override void OnActionExecuting(ActionExecutingContext context)
     {
         if (!context.ModelState.IsValid)
